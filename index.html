@@ -470,6 +470,8 @@ td.ex{font-family:var(--serif);font-size:1.15rem}
 .ph2{width:100%;height:100%;display:grid;place-items:center;text-align:center;color:#55565C;font-family:var(--serif);font-size:1.2rem}
 .pa .ph2{background:repeating-linear-gradient(135deg,#E3E8FF 0 16px,#D6DDFF 16px 32px)}
 .pb .ph2{background:repeating-linear-gradient(45deg,#1F2A55 0 16px,#26326A 16px 32px);color:#C9D2FF}
+.ph2 img{width:100%;height:100%;object-fit:cover;display:block}
+.pa .ph2 img{object-position:50% 45%}
 .pola2:hover{transform:rotate(0) translateY(-8px) scale(1.02);z-index:2}
 .bigsticker{position:absolute;left:47%;top:30%;z-index:3;transform:rotate(-8deg);transition:transform .3s}
 .bigsticker:hover{animation:wig .5s ease-in-out}
@@ -1189,8 +1191,8 @@ button:not(.book):not(:disabled):active,a.b2:active,a.cta-pill:active{filter:bri
   <section class="who who2" id="who">
     <div class="wrap">
       <div class="polas2">
-        <figure class="pola2 pa"><div class="ph2"><span>세션 단체 사진</span></div></figure>
-        <figure class="pola2 pb"><div class="ph2"><span>대회·행사 사진</span></div></figure>
+        <figure class="pola2 pa"><div class="ph2"><img src="img/who-session.jpg" alt="세션 단체 사진" loading="lazy" decoding="async"></div></figure>
+        <figure class="pola2 pb"><div class="ph2"><img src="img/who-event.jpg" alt="대회·행사 사진" loading="lazy" decoding="async"></div></figure>
         <div class="bigsticker" aria-hidden="true">
           <svg class="mic" viewBox="0 0 100 100"><path d="M50 66v14M36 82h28" stroke="#121212" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M28 46a22 22 0 0 0 44 0" stroke="#121212" stroke-width="7" stroke-linecap="round" fill="none"/><rect x="35" y="8" width="30" height="50" rx="15" fill="#F7A8DD" stroke="#121212" stroke-width="6"/><path d="M38 24h24M38 33h24M38 42h24" stroke="#121212" stroke-width="3.5" opacity=".6"/></svg>
           <div class="bs-body"><span class="bs-big">CUDS</span><span class="bs-small">DEBATE<br>SOCIETY</span></div>
