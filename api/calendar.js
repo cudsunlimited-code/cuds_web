@@ -164,7 +164,7 @@ module.exports = async function handler(req, res) {
   try {
     var items = await fetchAll(calId, key);
     var events = mapEvents(items);
-    res.setHeader("Cache-Control", "s-maxage=600, stale-while-revalidate=86400");
+    res.setHeader("Cache-Control", "s-maxage=60, stale-while-revalidate=86400");
     res.statusCode = 200;
     res.end(JSON.stringify({ events: events, updated: new Date().toISOString() }));
   } catch (e) {

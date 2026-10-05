@@ -65,12 +65,12 @@ League Spartan, DM Serif Display, DM Sans, Black Han Sans, Gowun Batang, Gothic 
 ## 호스팅과 데이터
 
 - **호스팅:** Vercel (https://cudsweb.vercel.app/). GitHub 저장소의 `main` 브랜치에 push하면 자동으로 다시 배포된다. 빌드 단계 없이 `index.html`을 그대로 서비스하고, `api/` 폴더는 서버리스 함수(Node.js)로 배포된다.
-- **달력 일정:** 동아리 구글 캘린더(`cudsunlimited@gmail.com`)에서 가져온다. Vercel 서버리스 함수 `api/calendar.js`(의존성 없음, Node 내장 `fetch`)가 Google Calendar API v3 `events.list`로 지난 1년 ~ 앞으로 1년의 일정을 읽고 사이트 형식(`{id,title,date,time,type,place,desc,pdf}`)으로 바꿔 `/api/calendar`로 돌려준다. 응답은 `Cache-Control: s-maxage=600, stale-while-revalidate=86400`으로 Vercel에서 약 10분 캐시된다.
+- **달력 일정:** 동아리 구글 캘린더(`cudsunlimited@gmail.com`)에서 가져온다. Vercel 서버리스 함수 `api/calendar.js`(의존성 없음, Node 내장 `fetch`)가 Google Calendar API v3 `events.list`로 지난 1년 ~ 앞으로 1년의 일정을 읽고 사이트 형식(`{id,title,date,time,type,place,desc,pdf}`)으로 바꿔 `/api/calendar`로 돌려준다. 응답은 `Cache-Control: s-maxage=60, stale-while-revalidate=86400`으로 Vercel에서 약 1분 캐시된다.
   - 분류는 제목 머리말로 정한다: `[세션]`/`[대회]`/`[행사]`/`[연합]`/`[기타]` (영문 `[session]` 등도 가능, 없으면 기타).
   - 환경 변수: `GOOGLE_API_KEY`(필수, Calendar API 사용 설정, 키 제한은 Calendar/Drive API로), `GCAL_ID`(선택, 기본 `cudsunlimited@gmail.com`). 변경 후 재배포 필요.
   - 페이지는 `index.html` 안의 `cal-data` JSON 블록을 먼저 그린 뒤 `/api/calendar` 결과로 교체한다. API 키가 없거나 오류가 나거나 `file://`로 열면 `cal-data`(기본 빈 배열)가 그대로 남는다. 즉 `cal-data`는 예비 데이터일 뿐이다.
   - 캘린더에 공개로 올린 일정은 모두 사이트에 표시되므로, 숨길 일정은 구글 캘린더에서 비공개로 설정한다 (비공개·취소 일정은 걸러냄).
-- **사진 갤러리:** 동아리 구글 드라이브의 공개 폴더 `Gallery`(ID `1ePToGxtANGVHkGJ0yWgnOw9D_vUTrS3o`, 링크가 있는 모든 사용자 보기 가능)에서 가져온다. 서버리스 함수 `api/gallery.js`(의존성 없음)가 Drive API v3 `files.list`로 폴더 **바로 아래**의 이미지 파일(`mimeType contains 'image/'`, 휴지통 제외, 하위 폴더는 읽지 않음)을 페이지 단위로 모두 읽어 `{photos:[{id,src,thumb,date,caption,w,h}],updated}`(최신순)로 `/api/gallery`에서 돌려준다. 캐시·오류 처리는 달력과 같다 (성공 시 약 10분 캐시, 키 없음 500, 구글 오류 502).
+- **사진 갤러리:** 동아리 구글 드라이브의 공개 폴더 `Gallery`(ID `1ePToGxtANGVHkGJ0yWgnOw9D_vUTrS3o`, 링크가 있는 모든 사용자 보기 가능)에서 가져온다. 서버리스 함수 `api/gallery.js`(의존성 없음)가 Drive API v3 `files.list`로 폴더 **바로 아래**의 이미지 파일(`mimeType contains 'image/'`, 휴지통 제외, 하위 폴더는 읽지 않음)을 페이지 단위로 모두 읽어 `{photos:[{id,src,thumb,date,caption,w,h}],updated}`(최신순)로 `/api/gallery`에서 돌려준다. 캐시·오류 처리는 달력과 같다 (성공 시 약 1분 캐시, 키 없음 500, 구글 오류 502).
   - 날짜: 파일 이름 맨 앞의 `YYYY-MM-DD`/`YYYYMMDD`(구분자 `-` `.` `_` 공백 허용) → 사진 EXIF 촬영 시각 → 드라이브에 올린 시각(서울 날짜) 순.
   - 설명: 드라이브 파일의 '설명'이 있으면 그것, 없으면 파일 이름에서 날짜·확장자를 뺀 부분(`_`는 공백으로). `IMG_1234`처럼 숫자뿐인 이름은 설명 없음.
   - 이미지 주소: `https://lh3.googleusercontent.com/d/<id>=w1600`(크게 보기), `=w600`(썸네일). 공개 공유된 파일은 API 키 없이 이 주소로 바로 보인다. 회전 정보(`rotation`)가 90°/270°면 가로·세로 크기를 바꿔 준다.

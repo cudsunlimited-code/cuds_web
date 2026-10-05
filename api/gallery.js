@@ -143,7 +143,7 @@ module.exports = async function handler(req, res) {
   try {
     var files = await fetchAll(folderId, key);
     var photos = mapPhotos(files);
-    res.setHeader("Cache-Control", "s-maxage=600, stale-while-revalidate=86400");
+    res.setHeader("Cache-Control", "s-maxage=60, stale-while-revalidate=86400");
     res.statusCode = 200;
     res.end(JSON.stringify({ photos: photos, updated: new Date().toISOString() }));
   } catch (e) {
